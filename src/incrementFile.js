@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { increment, decrement } from './action';
 
 class IncrementFile extends Component {
   constructor(props){
@@ -10,14 +11,16 @@ class IncrementFile extends Component {
   }
 
   increment = () => {
+    this.props.increment();
       // this.setState({ click: this.state.click +1})
       // console.log('increment');
   };
   
   decrement = () => {
+    this.props.decrement();
     // this.setState({ click: this.state.click -1})
     // console.log('decrement');
-}
+  }
 
 para  = () => {
     return <p>{this.props.click}</p>
@@ -30,8 +33,6 @@ para  = () => {
     return (
       <div>
             <p>{this.props.count}</p>
-            <p>{this.props.naa}</p>
-            <p>{this.props.umr}</p>
           <button onClick={this.increment}>Add</button>
           <button  onClick={this.decrement}>Subtract</button>
       </div>
@@ -43,9 +44,14 @@ const mapStateToProps = (state) => {
   console.log(state, 'state in component')
   return {
     count: state.count,
-    naa: state.user.name,
-    umr: state.user.age
+    // naa: state.user.name,
+    // umr: state.user.age
   }
 }
 
-export default connect(mapStateToProps)(IncrementFile);
+const mapDispatchToProps = {
+  increment,
+  decrement
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(IncrementFile);
