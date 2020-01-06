@@ -1,39 +1,70 @@
-import React, {Component} from 'react';
-import logo from './logo.svg';
-import './App.css';
-import IncrementFile from './incrementFile';
+// import React, {Component} from 'react';
+// import logo from './logo.svg';
+// import './App.css';
+// import IncrementFile from './incrementFile';
 
-class App extends Component {
-  state = {
-    user: {
-      name: 'doe',
-      age: 24,
-      image: '../../_blank'
-    }
-  }
-  render(){
-    return (
-      <div className="App">
+// class App extends Component {
+//   state = {
+//     user: {
+//       name: 'doe',
+//       age: 24,
+//       image: '../../_blank'
+//     }
+//   }
+//   render(){
+//     return (
+//       <div className="App">
 
-        {<IncrementFile user={this.state.user}/>}
-        {/* <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header> */}
-      </div>
-    );
-  }
+//         {<IncrementFile user={this.state.user}/>}
+//         {/* <header className="App-header">
+//           <img src={logo} className="App-logo" alt="logo" />
+//           <p>
+//             Edit <code>src/App.js</code> and save to reload.
+//           </p>
+//           <a
+//             className="App-link"
+//             href="https://reactjs.org"
+//             target="_blank"
+//             rel="noopener noreferrer"
+//           >
+//             Learn React
+//           </a>
+//         </header> */}
+//       </div>
+//     );
+//   }
  
+// }
+
+// export default App;
+
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Home from "./components/Home";
+import Login from "./components/Login";
+
+function App(props) {
+  const { isAuthenticated, isVerifying } = props;
+  return (
+    <Switch>
+      <ProtectedRoute
+        exact
+        path="/"
+        component={Home}
+        isAuthenticated={isAuthenticated}
+        isVerifying={isVerifying}
+      />
+      <Route path="/login" component={Login} />
+    </Switch>
+  );
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    isAuthenticated: state.auth.isAuthenticated,
+    isVerifying: state.auth.isVerifying
+  };
+}
+export default connect(mapStateToProps)(App);
